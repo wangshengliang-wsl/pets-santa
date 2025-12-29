@@ -1,15 +1,21 @@
 "use client";
 
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { STYLE_TEMPLATES } from '../constants';
 import { StyleTemplate, User } from '../types';
-import { generatePetPortrait } from '../services/geminiService';
 import { useUpload } from '@/hooks/use-upload';
 
 interface HeroProps {
   onGenerated: (original: string, generated: string, style: string) => void;
   user: User | null;
   onLogin: () => void;
+}
+
+interface TaskStatus {
+  taskId: string;
+  status: 'pending' | 'processing' | 'success' | 'failed';
+  resultImageUrl?: string;
+  errorMessage?: string;
 }
 
 const Hero: React.FC<HeroProps> = ({ onGenerated, user, onLogin }) => {
@@ -20,9 +26,94 @@ const Hero: React.FC<HeroProps> = ({ onGenerated, user, onLogin }) => {
   const [isGenerating, setIsGenerating] = useState(false);
   const [result, setResult] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [currentTaskId, setCurrentTaskId] = useState<string | null>(null);
+  const [generationStatus, setGenerationStatus] = useState<string>('');
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const pollingIntervalRef = useRef<NodeJS.Timeout | null>(null);
+  const isMountedRef = useRef(true);
   
   const { upload, isUploading, error: uploadError, progress } = useUpload();
+
+  // 清理轮询
+  const stopPolling = useCallback(() => {
+    if (pollingIntervalRef.current) {
+      clearInterval(pollingIntervalRef.current);
+      pollingIntervalRef.current = null;
+    }
+  }, []);
+
+  // 组件挂载和卸载时管理 isMounted 状态
+  useEffect(() => {
+    isMountedRef.current = true;
+    return () => {
+      isMountedRef.current = false;
+      stopPolling();
+    };
+  }, [stopPolling]);
+
+  // 轮询任务状态
+  const pollTaskStatus = useCallback(async (taskId: string) => {
+    // 检查组件是否仍然挂载
+    if (!isMountedRef.current) {
+      stopPolling();
+      return;
+    }
+
+    try {
+      const response = await fetch(`/api/tasks/${taskId}/status`);
+      if (!response.ok) {
+        throw new Error('Failed to get task status');
+      }
+
+      const data: TaskStatus = await response.json();
+
+      // 再次检查组件是否仍然挂载
+      if (!isMountedRef.current) {
+        stopPolling();
+        return;
+      }
+
+      if (data.status === 'success' && data.resultImageUrl) {
+        stopPolling();
+        setResult(data.resultImageUrl);
+        setIsGenerating(false);
+        setGenerationStatus('');
+        if (preview) {
+          onGenerated(preview, data.resultImageUrl, selectedStyle.label);
+        }
+      } else if (data.status === 'failed') {
+        stopPolling();
+        setError(data.errorMessage || 'Generation failed. Please try again.');
+        setIsGenerating(false);
+        setGenerationStatus('');
+      } else {
+        // 更新状态显示
+        setGenerationStatus(data.status === 'processing' ? 'Processing your image...' : 'Waiting in queue...');
+      }
+    } catch (err) {
+      console.error('Polling error:', err);
+      // 如果组件已卸载，停止轮询
+      if (!isMountedRef.current) {
+        stopPolling();
+        return;
+      }
+      // 继续轮询，不停止
+    }
+  }, [stopPolling, preview, selectedStyle.label, onGenerated]);
+
+  // 开始轮询
+  const startPolling = useCallback((taskId: string) => {
+    stopPolling();
+    setCurrentTaskId(taskId);
+    
+    // 立即检查一次
+    pollTaskStatus(taskId);
+    
+    // 每 3 秒检查一次
+    pollingIntervalRef.current = setInterval(() => {
+      pollTaskStatus(taskId);
+    }, 3000);
+  }, [stopPolling, pollTaskStatus]);
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const selected = e.target.files?.[0];
@@ -53,36 +144,72 @@ const Hero: React.FC<HeroProps> = ({ onGenerated, user, onLogin }) => {
   };
 
   const handleGenerate = async () => {
-    if (!preview) {
-      setError("Please upload a photo first.");
+    // 检查是否已登录
+    if (!user) {
+      onLogin();
+      return;
+    }
+
+    if (!uploadedUrl) {
+      setError("Please wait for the image to upload.");
       return;
     }
 
     setIsGenerating(true);
     setError(null);
     setResult(null);
+    setGenerationStatus('Creating generation task...');
 
     try {
-      const generatedUrl = await generatePetPortrait(preview, selectedStyle.prompt);
-      if (generatedUrl) {
-        setResult(generatedUrl);
-        onGenerated(preview, generatedUrl, selectedStyle.label);
-      } else {
-        setError("Generation failed. Please try again.");
+      const response = await fetch('/api/generate', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          imageUrl: uploadedUrl,
+          prompt: selectedStyle.prompt,
+          style: selectedStyle.label,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        if (response.status === 402) {
+          setError(`Insufficient credits. You need ${data.required} credits, but only have ${data.current}.`);
+        } else if (response.status === 401) {
+          onLogin();
+          setError("Please login to generate images.");
+        } else {
+          setError(data.error || 'Failed to create generation task.');
+        }
+        setIsGenerating(false);
+        setGenerationStatus('');
+        return;
       }
+
+      // 开始轮询任务状态
+      setGenerationStatus('Waiting in queue...');
+      startPolling(data.taskId);
     } catch (err: unknown) {
-      setError("Something went wrong. Please check your API key or connection.");
-    } finally {
+      console.error('Generation error:', err);
+      setError("Something went wrong. Please try again.");
       setIsGenerating(false);
+      setGenerationStatus('');
     }
   };
 
   const reset = () => {
+    stopPolling();
     setFile(null);
     setPreview(null);
     setUploadedUrl(null);
     setResult(null);
     setError(null);
+    setCurrentTaskId(null);
+    setGenerationStatus('');
+    setIsGenerating(false);
   };
 
   const handleDownload = () => {
@@ -91,12 +218,26 @@ const Hero: React.FC<HeroProps> = ({ onGenerated, user, onLogin }) => {
       return;
     }
     if (result) {
-      const link = document.createElement('a');
-      link.href = result;
-      link.download = `christmas-pet-${Date.now()}.png`;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
+      try {
+        const link = document.createElement('a');
+        link.href = result;
+        link.download = `christmas-pet-${Date.now()}.png`;
+        document.body.appendChild(link);
+        link.click();
+        // 使用 setTimeout 确保 click 事件完成后再移除
+        setTimeout(() => {
+          try {
+            if (link.parentNode) {
+              document.body.removeChild(link);
+            }
+          } catch (e) {
+            // 忽略移除失败的错误
+            console.warn('Failed to remove download link:', e);
+          }
+        }, 100);
+      } catch (err) {
+        console.error('Download error:', err);
+      }
     }
   };
 
@@ -156,9 +297,9 @@ const Hero: React.FC<HeroProps> = ({ onGenerated, user, onLogin }) => {
               <div className="flex flex-col gap-3">
                 <button
                   onClick={handleGenerate}
-                  disabled={isGenerating || !preview}
+                  disabled={isGenerating || !preview || isUploading}
                   className={`w-full py-4 rounded-full font-bold text-lg shadow-xl transition-all transform active:scale-95 flex items-center justify-center gap-2 ${
-                    isGenerating || !preview 
+                    isGenerating || !preview || isUploading
                     ? 'bg-slate-300 dark:bg-slate-700 text-slate-500 dark:text-slate-500 cursor-not-allowed shadow-none' 
                     : 'bg-red-600 dark:bg-red-600 text-white hover:bg-red-700 dark:hover:bg-red-500 hover:-translate-y-1'
                   }`}
@@ -169,10 +310,13 @@ const Hero: React.FC<HeroProps> = ({ onGenerated, user, onLogin }) => {
                         <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                         <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                       </svg>
-                      Generating...
+                      {generationStatus || 'Generating...'}
                     </span>
                   ) : (
-                    'Generate Christmas Look'
+                    <>
+                      {!user ? '🔐 Login to Generate' : 'Generate Christmas Look'}
+                      {!user && <span className="text-xs opacity-75">(20 credits)</span>}
+                    </>
                   )}
                 </button>
                 <div className="flex flex-col items-center gap-1 text-[10px] text-slate-400 dark:text-slate-500">
@@ -180,7 +324,7 @@ const Hero: React.FC<HeroProps> = ({ onGenerated, user, onLogin }) => {
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3" viewBox="0 0 20 20" fill="currentColor">
                       <path fillRule="evenodd" d="M2.166 4.9L10 1.554 17.834 4.9c.82.35 1.166 1.274 1.166 2.1V10c0 5.15-2.6 7.43-9 9-6.4-1.57-9-3.85-9-9V7c0-.826.346-1.75 1.166-2.1zM10 3.3l-5 2.14v4.56c0 3.32 1.4 5.09 5 6.4 3.6-1.31 5-3.08 5-6.4V5.44L10 3.3z" clipRule="evenodd" />
                     </svg>
-                    Your photos are private
+                    20 credits per generation
                   </span>
                   <p>Best results with clear lighting and your pet centered.</p>
                 </div>
@@ -240,20 +384,31 @@ const Hero: React.FC<HeroProps> = ({ onGenerated, user, onLogin }) => {
                       </div>
                     )}
                     
+                    {/* 生成中状态指示器 */}
+                    {isGenerating && (
+                      <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
+                        <div className="bg-white dark:bg-slate-800 rounded-2xl p-6 text-center max-w-xs">
+                          <div className="animate-spin rounded-full h-12 w-12 border-4 border-red-600 border-t-transparent mx-auto mb-4"></div>
+                          <p className="text-sm font-medium text-slate-700 dark:text-slate-300">{generationStatus || 'Generating...'}</p>
+                          <p className="text-xs text-slate-500 dark:text-slate-400 mt-2">This may take 30-60 seconds</p>
+                        </div>
+                      </div>
+                    )}
+                    
                     {/* 上传成功指示器 */}
-                    {uploadedUrl && !isUploading && (
+                    {uploadedUrl && !isUploading && !isGenerating && (
                       <div className="absolute bottom-4 right-4">
                         <div className="bg-green-500 text-white px-3 py-1.5 rounded-full text-[10px] font-bold shadow-lg uppercase tracking-widest flex items-center gap-1">
                           <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3" viewBox="0 0 20 20" fill="currentColor">
                             <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                           </svg>
-                          Uploaded
+                          Ready
                         </div>
                       </div>
                     )}
                   </div>
                   <div className="mt-6 text-center">
-                    {uploadedUrl ? (
+                    {uploadedUrl && !isUploading ? (
                       <p className="text-sm text-green-600 dark:text-green-400 font-medium">Photo uploaded! Ready to generate ✨</p>
                     ) : isUploading ? (
                       <p className="text-sm text-slate-400 dark:text-slate-500 font-medium">Uploading your photo...</p>
@@ -266,7 +421,7 @@ const Hero: React.FC<HeroProps> = ({ onGenerated, user, onLogin }) => {
                 <div className="flex-grow flex flex-col items-center justify-center border-4 border-dashed border-slate-100 dark:border-slate-800 rounded-3xl p-10 transition-colors hover:border-red-100 dark:hover:border-red-900/40 group">
                   <div className="w-20 h-20 bg-red-50 dark:bg-red-900/20 rounded-full flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10 text-red-500 dark:text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 002-2H4a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                     </svg>
                   </div>
                   <button 
@@ -299,4 +454,3 @@ const Hero: React.FC<HeroProps> = ({ onGenerated, user, onLogin }) => {
 };
 
 export default Hero;
-

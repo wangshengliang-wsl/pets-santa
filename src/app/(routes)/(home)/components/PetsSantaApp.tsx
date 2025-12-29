@@ -14,7 +14,7 @@ import CTASection from './CTASection';
 import PricingPage from './PricingPage';
 import MyCreationsPage from './MyCreationsPage';
 import BillingPage from './BillingPage';
-import { Page, User, Creation } from '../types';
+import { Page, User } from '../types';
 import { useSession, signOut } from '@/lib/auth/client';
 
 interface PetsSantaAppProps {
@@ -37,7 +37,6 @@ const PetsSantaApp: React.FC<PetsSantaAppProps> = ({ initialPage }) => {
 
   const [currentPage, setCurrentPage] = useState<Page>(getInitialPage());
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
-  const [creations, setCreations] = useState<Creation[]>([]);
   const [isDarkMode, setIsDarkMode] = useState(false);
 
   // 使用 Better Auth 的 useSession 监听会话状态
@@ -70,11 +69,6 @@ const PetsSantaApp: React.FC<PetsSantaAppProps> = ({ initialPage }) => {
     if (shouldBeDark) {
       document.documentElement.classList.add('dark');
     }
-  }, []);
-
-  useEffect(() => {
-    const saved = localStorage.getItem('pets_santa_creations');
-    if (saved) setCreations(JSON.parse(saved));
   }, []);
 
   useEffect(() => {
@@ -112,17 +106,10 @@ const PetsSantaApp: React.FC<PetsSantaAppProps> = ({ initialPage }) => {
     handlePageChange('home');
   };
 
+  // 图片生成完成后的回调（现在由后端保存，此函数仅用于通知）
   const handleNewCreation = (original: string, generated: string, style: string) => {
-    const newCreation: Creation = { 
-      id: Math.random().toString(36).substr(2, 9), 
-      originalImage: original, 
-      generatedImage: generated, 
-      style: style, 
-      date: new Date().toLocaleDateString() 
-    };
-    const updated = [newCreation, ...creations];
-    setCreations(updated);
-    localStorage.setItem('pets_santa_creations', JSON.stringify(updated));
+    // 数据现在保存在数据库中，这里只是一个通知
+    console.log('New creation completed:', { original, generated, style });
   };
 
   const scrollToTop = () => window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -163,7 +150,7 @@ const PetsSantaApp: React.FC<PetsSantaAppProps> = ({ initialPage }) => {
           onLogin={() => setIsAuthModalOpen(true)}
         />
       )}
-      {currentPage === 'my-creations' && <MyCreationsPage creations={creations} />}
+      {currentPage === 'my-creations' && <MyCreationsPage />}
       {currentPage === 'billing' && (
         <BillingPage onGoPricing={() => handlePageChange('pricing')} />
       )}

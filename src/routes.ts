@@ -8,6 +8,7 @@ export const apiAuthPrefix: string = "/api/auth";
 export const publicApiRoutes: string[] = [
   "/api/config",
   "/api/webhook",
+  "/api/callback",
 ];
 
 export const DEFAULT_LOGIN_REDIRECT: string = "/";
