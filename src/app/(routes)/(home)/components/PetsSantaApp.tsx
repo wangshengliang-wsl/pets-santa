@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import AppLayout from './AppLayout';
 import Hero from './Hero';
 import Features from './Features';
@@ -12,11 +13,29 @@ import TestimonialSection from './TestimonialSection';
 import CTASection from './CTASection';
 import PricingPage from './PricingPage';
 import MyCreationsPage from './MyCreationsPage';
+import BillingPage from './BillingPage';
 import { Page, User, Creation } from '../types';
 import { useSession, signOut } from '@/lib/auth/client';
 
-const PetsSantaApp: React.FC = () => {
-  const [currentPage, setCurrentPage] = useState<Page>('home');
+interface PetsSantaAppProps {
+  initialPage?: Page;
+}
+
+const PetsSantaApp: React.FC<PetsSantaAppProps> = ({ initialPage }) => {
+  const pathname = usePathname();
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  
+  // 根据路径确定初始页面
+  const getInitialPage = (): Page => {
+    if (initialPage) return initialPage;
+    if (pathname === '/billing') return 'billing';
+    if (pathname === '/pricing') return 'pricing';
+    if (pathname === '/my-creations') return 'my-creations';
+    return 'home';
+  };
+
+  const [currentPage, setCurrentPage] = useState<Page>(getInitialPage());
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [creations, setCreations] = useState<Creation[]>([]);
   const [isDarkMode, setIsDarkMode] = useState(false);
@@ -31,6 +50,15 @@ const PetsSantaApp: React.FC = () => {
     email: session.user.email,
     plan: 'free'
   } : null;
+
+  // 监听路径变化，同步页面状态
+  useEffect(() => {
+    const page = getInitialPage();
+    if (page !== currentPage) {
+      setCurrentPage(page);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pathname, initialPage]);
 
   useEffect(() => {
     // Check for dark mode preference
@@ -61,9 +89,27 @@ const PetsSantaApp: React.FC = () => {
 
   const toggleDarkMode = () => setIsDarkMode(prev => !prev);
 
+  // 包装的 setCurrentPage，同时更新 URL
+  const handlePageChange = (page: Page) => {
+    setCurrentPage(page);
+    // 更新 URL，但保持查询参数（如 success=true&session_id=xxx）
+    const currentSearch = searchParams.toString();
+    const queryString = currentSearch ? `?${currentSearch}` : '';
+    
+    const routes: Record<Page, string> = {
+      'home': '/',
+      'pricing': '/pricing',
+      'my-creations': '/my-creations',
+      'billing': '/billing',
+    };
+    
+    const newPath = routes[page] || '/';
+    router.push(`${newPath}${queryString}`);
+  };
+
   const handleLogout = async () => {
     await signOut();
-    setCurrentPage('home');
+    handlePageChange('home');
   };
 
   const handleNewCreation = (original: string, generated: string, style: string) => {
@@ -92,7 +138,7 @@ const PetsSantaApp: React.FC = () => {
   return (
     <AppLayout 
       currentPage={currentPage} 
-      setCurrentPage={setCurrentPage} 
+      setCurrentPage={handlePageChange} 
       user={mappedUser} 
       onLogin={() => setIsAuthModalOpen(true)} 
       onLogout={handleLogout}
@@ -107,11 +153,20 @@ const PetsSantaApp: React.FC = () => {
           <AboutSection />
           <TestimonialSection />
           <FAQ />
-          <CTASection onScrollToTop={scrollToTop} onGoPricing={() => setCurrentPage('pricing')} />
+          <CTASection onScrollToTop={scrollToTop} onGoPricing={() => handlePageChange('pricing')} />
         </>
       )}
-      {currentPage === 'pricing' && <PricingPage onPlanSelect={(plan) => mappedUser ? alert(`Processing purchase for ${plan}...`) : setIsAuthModalOpen(true)} />}
+      {currentPage === 'pricing' && (
+        <PricingPage 
+          onPlanSelect={(plan) => console.log(`Plan selected: ${plan}`)} 
+          isLoggedIn={!!mappedUser}
+          onLogin={() => setIsAuthModalOpen(true)}
+        />
+      )}
       {currentPage === 'my-creations' && <MyCreationsPage creations={creations} />}
+      {currentPage === 'billing' && (
+        <BillingPage onGoPricing={() => handlePageChange('pricing')} />
+      )}
       <AuthModal isOpen={isAuthModalOpen} onClose={() => setIsAuthModalOpen(false)} />
     </AppLayout>
   );

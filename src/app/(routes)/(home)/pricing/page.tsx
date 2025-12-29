@@ -1,5 +1,5 @@
 import { Suspense } from "react";
-import PetsSantaApp from "./components/PetsSantaApp";
+import PetsSantaApp from "../components/PetsSantaApp";
 
 function LoadingSpinner() {
   return (
@@ -9,10 +9,10 @@ function LoadingSpinner() {
   );
 }
 
-export default function Home() {
+export default function PricingPage() {
   return (
     <Suspense fallback={<LoadingSpinner />}>
-      <PetsSantaApp />
+      <PetsSantaApp initialPage="pricing" />
     </Suspense>
   );
 }

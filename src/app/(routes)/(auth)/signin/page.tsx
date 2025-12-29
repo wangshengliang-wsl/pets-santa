@@ -30,7 +30,7 @@ export default function SignInPage() {
               <p className="text-slate-500 dark:text-slate-400">Sign in to continue creating festive pet portraits</p>
             </div>
             
-            <SignInForm />
+        <SignInForm />
             
             {/* Divider */}
             <div className="flex items-center gap-4 my-6">

@@ -1,4 +1,4 @@
-export type Page = 'home' | 'pricing' | 'my-creations';
+export type Page = 'home' | 'pricing' | 'my-creations' | 'billing';
 
 export interface User {
   id: string;

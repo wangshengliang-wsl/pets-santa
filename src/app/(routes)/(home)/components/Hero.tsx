@@ -4,6 +4,7 @@ import React, { useState, useRef } from 'react';
 import { STYLE_TEMPLATES } from '../constants';
 import { StyleTemplate, User } from '../types';
 import { generatePetPortrait } from '../services/geminiService';
+import { useUpload } from '@/hooks/use-upload';
 
 interface HeroProps {
   onGenerated: (original: string, generated: string, style: string) => void;
@@ -14,13 +15,16 @@ interface HeroProps {
 const Hero: React.FC<HeroProps> = ({ onGenerated, user, onLogin }) => {
   const [file, setFile] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
+  const [uploadedUrl, setUploadedUrl] = useState<string | null>(null);
   const [selectedStyle, setSelectedStyle] = useState<StyleTemplate>(STYLE_TEMPLATES[0]);
   const [isGenerating, setIsGenerating] = useState(false);
   const [result, setResult] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  
+  const { upload, isUploading, error: uploadError, progress } = useUpload();
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const selected = e.target.files?.[0];
     if (selected) {
       if (selected.size > 10 * 1024 * 1024) {
@@ -29,11 +33,22 @@ const Hero: React.FC<HeroProps> = ({ onGenerated, user, onLogin }) => {
       }
       setFile(selected);
       setError(null);
+      
+      // 创建本地预览
       const reader = new FileReader();
       reader.onloadend = () => {
         setPreview(reader.result as string);
       };
       reader.readAsDataURL(selected);
+      
+      // 上传到 Vercel Blob
+      const result = await upload(selected);
+      if (result) {
+        setUploadedUrl(result.url);
+        console.log('Uploaded to Vercel Blob:', result.url);
+      } else if (uploadError) {
+        setError(uploadError);
+      }
     }
   };
 
@@ -65,6 +80,7 @@ const Hero: React.FC<HeroProps> = ({ onGenerated, user, onLogin }) => {
   const reset = () => {
     setFile(null);
     setPreview(null);
+    setUploadedUrl(null);
     setResult(null);
     setError(null);
   };
@@ -202,9 +218,48 @@ const Hero: React.FC<HeroProps> = ({ onGenerated, user, onLogin }) => {
                       </svg>
                     </button>
                     <div className="absolute top-4 left-4 bg-slate-900 dark:bg-slate-700 text-white px-3 py-1 rounded-full text-[10px] font-bold shadow-lg uppercase tracking-widest">Before</div>
+                    
+                    {/* 上传状态指示器 */}
+                    {isUploading && (
+                      <div className="absolute bottom-4 left-4 right-4">
+                        <div className="bg-white/90 dark:bg-slate-800/90 rounded-xl p-3 backdrop-blur-sm">
+                          <div className="flex items-center gap-2 mb-2">
+                            <svg className="animate-spin h-4 w-4 text-red-600" viewBox="0 0 24 24">
+                              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                            </svg>
+                            <span className="text-xs font-medium text-slate-600 dark:text-slate-300">Uploading...</span>
+                          </div>
+                          <div className="w-full bg-slate-200 dark:bg-slate-700 rounded-full h-1.5">
+                            <div 
+                              className="bg-red-600 h-1.5 rounded-full transition-all duration-300" 
+                              style={{ width: `${progress}%` }}
+                            ></div>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                    
+                    {/* 上传成功指示器 */}
+                    {uploadedUrl && !isUploading && (
+                      <div className="absolute bottom-4 right-4">
+                        <div className="bg-green-500 text-white px-3 py-1.5 rounded-full text-[10px] font-bold shadow-lg uppercase tracking-widest flex items-center gap-1">
+                          <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3" viewBox="0 0 20 20" fill="currentColor">
+                            <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                          </svg>
+                          Uploaded
+                        </div>
+                      </div>
+                    )}
                   </div>
                   <div className="mt-6 text-center">
-                    <p className="text-sm text-slate-400 dark:text-slate-500 font-medium italic">Ready to spread holiday cheer? ✨</p>
+                    {uploadedUrl ? (
+                      <p className="text-sm text-green-600 dark:text-green-400 font-medium">Photo uploaded! Ready to generate ✨</p>
+                    ) : isUploading ? (
+                      <p className="text-sm text-slate-400 dark:text-slate-500 font-medium">Uploading your photo...</p>
+                    ) : (
+                      <p className="text-sm text-slate-400 dark:text-slate-500 font-medium italic">Ready to spread holiday cheer? ✨</p>
+                    )}
                   </div>
                 </div>
               ) : (
