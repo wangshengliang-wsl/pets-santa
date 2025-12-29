@@ -1,7 +1,9 @@
 "use client";
 
 import React from 'react';
+import { useTranslations } from 'next-intl';
 import { Page, User } from '../types';
+import { LanguageSwitcher } from '@/components/LanguageSwitcher';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -14,23 +16,27 @@ interface LayoutProps {
   toggleDarkMode: () => void;
 }
 
-const AppLayout: React.FC<LayoutProps> = ({ 
-  children, 
-  currentPage, 
-  setCurrentPage, 
-  user, 
-  onLogin, 
+const AppLayout: React.FC<LayoutProps> = ({
+  children,
+  currentPage,
+  setCurrentPage,
+  user,
+  onLogin,
   onLogout,
   isDarkMode,
   toggleDarkMode
 }) => {
+  const t = useTranslations('nav');
+  const tCommon = useTranslations('common');
+  const tFooter = useTranslations('footer');
+
   return (
     <div className="min-h-screen flex flex-col bg-slate-50 dark:bg-slate-950 transition-colors duration-300">
       <nav className="sticky top-0 z-50 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 transition-colors duration-300">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between h-16 items-center">
             <div className="flex items-center gap-8">
-              <div 
+              <div
                 className="flex items-center gap-2 cursor-pointer group"
                 onClick={() => setCurrentPage('home')}
               >
@@ -40,22 +46,25 @@ const AppLayout: React.FC<LayoutProps> = ({
                 <span className="festive-font text-2xl font-bold text-red-600 tracking-tight">Pets Santa</span>
               </div>
               <div className="hidden md:flex items-center gap-6">
-                <button 
+                <button
                   onClick={() => setCurrentPage('home')}
                   className={`text-sm font-medium transition-colors ${currentPage === 'home' ? 'text-red-600' : 'text-slate-600 dark:text-slate-400 hover:text-red-600 dark:hover:text-red-500'}`}
                 >
-                  Home
+                  {t('home')}
                 </button>
-                <button 
+                <button
                   onClick={() => setCurrentPage('pricing')}
                   className={`text-sm font-medium transition-colors ${currentPage === 'pricing' ? 'text-red-600' : 'text-slate-600 dark:text-slate-400 hover:text-red-600 dark:hover:text-red-500'}`}
                 >
-                  Pricing
+                  {t('pricing')}
                 </button>
               </div>
             </div>
 
             <div className="flex items-center gap-2 sm:gap-4">
+              {/* Language Switcher */}
+              <LanguageSwitcher />
+
               {/* Dark Mode Toggle */}
               <button
                 onClick={toggleDarkMode}
@@ -82,33 +91,33 @@ const AppLayout: React.FC<LayoutProps> = ({
                     <span className="hidden sm:inline text-sm font-medium text-slate-700 dark:text-slate-300">{user.name}</span>
                   </button>
                   <div className="absolute right-0 top-full mt-2 w-48 bg-white dark:bg-slate-800 rounded-xl shadow-2xl border border-slate-100 dark:border-slate-700 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all py-2 z-50">
-                    <button 
+                    <button
                       onClick={() => setCurrentPage('my-creations')}
                       className="w-full px-4 py-2 text-left text-sm text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700 hover:text-red-600 dark:hover:text-red-400"
                     >
-                      My Creations
+                      {t('myCreations')}
                     </button>
-                    <button 
+                    <button
                       onClick={() => setCurrentPage('billing')}
                       className="w-full px-4 py-2 text-left text-sm text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700 hover:text-red-600 dark:hover:text-red-400"
                     >
-                      Billing
+                      {t('billing')}
                     </button>
                     <div className="h-px bg-slate-100 dark:bg-slate-700 my-1"></div>
-                    <button 
+                    <button
                       onClick={onLogout}
                       className="w-full px-4 py-2 text-left text-sm text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/30"
                     >
-                      Log out
+                      {t('logout')}
                     </button>
                   </div>
                 </div>
               ) : (
-                <button 
+                <button
                   onClick={onLogin}
                   className="px-6 py-2 rounded-full bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-sm font-semibold hover:bg-slate-800 dark:hover:bg-slate-100 transition-colors shadow-lg"
                 >
-                  Log in
+                  {t('login')}
                 </button>
               )}
             </div>
@@ -135,8 +144,8 @@ const AppLayout: React.FC<LayoutProps> = ({
             <div>
               <h4 className="text-white font-bold mb-4 uppercase text-xs tracking-widest">Product</h4>
               <ul className="space-y-2 text-sm text-slate-400">
-                <li><button onClick={() => setCurrentPage('home')} className="hover:text-red-400 transition-colors">Home</button></li>
-                <li><button onClick={() => setCurrentPage('pricing')} className="hover:text-red-400 transition-colors">Pricing</button></li>
+                <li><button onClick={() => setCurrentPage('home')} className="hover:text-red-400 transition-colors">{t('home')}</button></li>
+                <li><button onClick={() => setCurrentPage('pricing')} className="hover:text-red-400 transition-colors">{t('pricing')}</button></li>
               </ul>
             </div>
             <div>
@@ -148,7 +157,7 @@ const AppLayout: React.FC<LayoutProps> = ({
             </div>
           </div>
           <div className="mt-12 pt-8 border-t border-slate-800 text-sm text-center text-slate-500">
-            © {new Date().getFullYear()} Pets Santa. All rights reserved.
+            {tFooter('copyright')}
           </div>
         </div>
       </footer>
@@ -157,4 +166,3 @@ const AppLayout: React.FC<LayoutProps> = ({
 };
 
 export default AppLayout;
-

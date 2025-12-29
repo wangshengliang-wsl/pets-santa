@@ -1,0 +1,275 @@
+{
+  "metadata": {
+    "title": "Pets Santa - AI Christmas Pet Portraits",
+    "description": "Create magical Christmas portraits of your pets with AI. Dress your furry friends in Santa, Elf, or Reindeer outfits—perfect for holiday cards."
+  },
+  "common": {
+    "login": "Login",
+    "logout": "Logout",
+    "home": "Home",
+    "pricing": "Pricing",
+    "billing": "Billing",
+    "myCreations": "My Creations",
+    "download": "Download",
+    "share": "Share",
+    "tryAgain": "Try Again",
+    "refresh": "Refresh",
+    "credits": "Credits",
+    "loading": "Loading...",
+    "processing": "Processing...",
+    "generating": "Generating...",
+    "success": "Success",
+    "failed": "Failed",
+    "error": "Error",
+    "close": "Close"
+  },
+  "nav": {
+    "home": "Home",
+    "pricing": "Pricing",
+    "billing": "Billing",
+    "myCreations": "My Creations",
+    "login": "Login",
+    "logout": "Logout"
+  },
+  "hero": {
+    "titlePart1": "Create a",
+    "titleHighlight": "Christmas Portrait",
+    "titlePart2": "of Your Pet",
+    "subtitle": "Upload a photo and instantly dress your pet in Santa, Elf, or Reindeer outfits—perfect for holiday cards.",
+    "generateButton": "Generate Christmas Look",
+    "loginToGenerate": "Login to Generate",
+    "uploadButton": "Upload pet photo",
+    "uploadHint": "JPG / PNG • Up to 10MB",
+    "creditsPerGeneration": "20 credits per generation",
+    "bestResults": "Best results with clear lighting and your pet centered.",
+    "photoUploaded": "Photo uploaded! Ready to generate",
+    "uploadingPhoto": "Uploading your photo...",
+    "readyToSpread": "Ready to spread holiday cheer?",
+    "beforeLabel": "Before",
+    "afterLabel": "After",
+    "generateAnother": "Generate another style",
+    "newStyles": "New Styles",
+    "collection": "2025 Collection",
+    "waitingQueue": "Waiting in queue...",
+    "processingImage": "Processing your image...",
+    "creatingTask": "Creating generation task...",
+    "fileTooLarge": "File size too large. Max 10MB.",
+    "pleaseWaitUpload": "Please wait for the image to upload.",
+    "insufficientCredits": "Insufficient credits. You need {required} credits, but only have {current}.",
+    "pleaseLogin": "Please login to generate images.",
+    "somethingWrong": "Something went wrong. Please try again.",
+    "mayTake": "This may take 30-60 seconds",
+    "ready": "Ready",
+    "uploading": "Uploading...",
+    "shareTitle": "My Christmas Pet Portrait",
+    "shareText": "Check out my pet in their holiday outfit! Made with Pets Santa.",
+    "linkCopied": "Link copied to clipboard!",
+    "creditsLabel": "credits"
+  },
+  "styles": {
+    "santaSuit": "Santa Suit",
+    "elfCostume": "Elf Costume",
+    "reindeerHoodie": "Reindeer Hoodie",
+    "cozySweater": "Cozy Sweater",
+    "winterWonderland": "Winter Wonderland",
+    "giftBoxSurprise": "Gift Box Surprise"
+  },
+  "features": {
+    "title": "Features",
+    "subtitle": "Everything you need to create festive pet portraits in seconds. Our AI handles the lighting, shadows, and composition.",
+    "oneClick": {
+      "title": "One-Click Christmas Outfits",
+      "desc": "Instantly transform your pet into Santa, Elf, or Reindeer styles."
+    },
+    "holidayScenes": {
+      "title": "Holiday Scenes & Props",
+      "desc": "Add trees, lights, gifts, snow, and cozy backgrounds automatically."
+    },
+    "highQuality": {
+      "title": "High-Quality Downloads",
+      "desc": "Get crisp images ready for printing and sharing on social media."
+    },
+    "multipleStyles": {
+      "title": "Multiple Styles from One Photo",
+      "desc": "Generate several looks and pick your favorite holiday masterpiece."
+    },
+    "fastSimple": {
+      "title": "Fast & Simple",
+      "desc": "Upload → generate → download. No design skills needed at all."
+    },
+    "privateDefault": {
+      "title": "Private by Default",
+      "desc": "Your images aren't public unless you choose to share them."
+    }
+  },
+  "faq": {
+    "title": "Frequently Asked Questions",
+    "subtitle": "Common questions about Pets Santa portraits.",
+    "questions": {
+      "editingSkills": {
+        "q": "Do I need editing skills?",
+        "a": "No. Just upload a photo and our AI handles the rest automatically."
+      },
+      "bestPhotos": {
+        "q": "What photos work best?",
+        "a": "Clear lighting, your pet centered, and the face visible will yield the most realistic results."
+      },
+      "howLong": {
+        "q": "How long does it take?",
+        "a": "Usually a few seconds, depending on the model traffic. It's almost instant!"
+      },
+      "multipleStyles": {
+        "q": "Can I generate multiple styles?",
+        "a": "Yes—you can try different templates from the same photo as many times as your plan allows."
+      },
+      "isFree": {
+        "q": "Is it free?",
+        "a": "You can try it for free! Premium plans unlock more styles, priority speed, and higher-quality downloads."
+      },
+      "storePhotos": {
+        "q": "Do you store my photos?",
+        "a": "You control your creations. We respect your privacy and you can delete results from your history at any time."
+      }
+    }
+  },
+  "testimonials": {
+    "title": "What Pet Owners Are Saying",
+    "items": {
+      "emma": {
+        "text": "My cat looks incredible in the elf outfit—instant holiday vibe.",
+        "author": "Emma",
+        "role": "Cat Lover"
+      },
+      "lucas": {
+        "text": "We made Christmas portraits for our dog and rabbit. Super fun and easy.",
+        "author": "Lucas",
+        "role": "Dog Dad"
+      },
+      "nina": {
+        "text": "Perfect for our pet shop's holiday promo—customers loved it.",
+        "author": "Nina",
+        "role": "Shop Owner"
+      }
+    }
+  },
+  "cta": {
+    "title": "Ready to Make Your Pet's Christmas Portrait?",
+    "subtitle": "Upload a photo and generate your first festive look in seconds.",
+    "uploadGenerate": "Upload & Generate",
+    "seePricing": "See Pricing",
+    "noCreditCard": "No credit card required to try."
+  },
+  "about": {
+    "title": "Made for Pet Lovers, Built for the Holidays",
+    "description": "Pets helps you turn everyday pet photos into festive holiday portraits you'll actually want to share. No complicated tools—just upload and generate.",
+    "features": {
+      "holidayCards": "Perfect for holiday cards and gifts",
+      "socialPosts": "Great for social posts and family sharing",
+      "allPets": "Works for dogs, cats, and other pets"
+    },
+    "instantMagic": "Instant Magic",
+    "perfectGift": "Perfect gift for owners"
+  },
+  "pricing": {
+    "title": "Pricing",
+    "subtitle": "One-time purchase. No subscriptions, just holiday fun.",
+    "bestValue": "Best Value",
+    "holidayPack": "Holiday Pack",
+    "packDescription": "Perfect for sharing with family and friends. Get 200 credits for AI pet portraits.",
+    "oneTimePayment": "One-time payment",
+    "creditsIncluded": "{credits} Credits Included",
+    "buyCredits": "Buy 200 Credits",
+    "features": {
+      "holidayCredits": "200 Holiday Credits",
+      "highQuality": "High-quality downloads",
+      "allStyles": "All Christmas styles",
+      "priorityGeneration": "Priority generation",
+      "noExpiration": "No expiration",
+      "commercialUsage": "Commercial-friendly usage"
+    },
+    "secureCheckout": "Secure Checkout",
+    "poweredByStripe": "Powered by Stripe",
+    "customVolume": "Need custom volume?",
+    "contactUs": "Contact us",
+    "bulkRates": "for bulk rates."
+  },
+  "billing": {
+    "title": "Billing",
+    "currentCredits": "Current Credits",
+    "creditsAvailable": "credits available",
+    "purchaseHistory": "Purchase History",
+    "noPurchases": "No purchases yet",
+    "startCreating": "Buy credits to start creating festive pet portraits!",
+    "buyMoreCredits": "Buy More Credits",
+    "date": "Date",
+    "description": "Description",
+    "amount": "Amount",
+    "status": "Status",
+    "completed": "Completed",
+    "pending": "Pending",
+    "failed": "Failed",
+    "manageCredits": "Manage your credits and view payment history",
+    "totalEarned": "Total Earned",
+    "totalSpent": "Total Spent",
+    "creditUsage": "Credit Usage",
+    "noTransactions": "No transactions yet",
+    "balance": "Balance",
+    "creditsAdded": "Your credits have been added to your account.",
+    "pleaseLogin": "Please login to view billing information",
+    "failedToLoad": "Failed to load billing information"
+  },
+  "creations": {
+    "title": "My Creations",
+    "noCreations": "No creations yet",
+    "goCreate": "Go to the homepage and create your first festive portrait!",
+    "queued": "Queued",
+    "generating": "Generating",
+    "inQueue": "In queue...",
+    "generationFailed": "Generation failed",
+    "pleaseLogin": "Please login to view your creations",
+    "failedToLoad": "Failed to load creations"
+  },
+  "auth": {
+    "signIn": "Sign In",
+    "signUp": "Sign Up",
+    "email": "Email",
+    "password": "Password",
+    "confirmPassword": "Confirm Password",
+    "name": "Name",
+    "forgotPassword": "Forgot password?",
+    "noAccount": "Don't have an account?",
+    "haveAccount": "Already have an account?",
+    "orContinueWith": "Or continue with",
+    "or": "or",
+    "google": "Google",
+    "github": "GitHub",
+    "signingIn": "Signing in...",
+    "signingUp": "Signing up...",
+    "welcomeBack": "Welcome back",
+    "createAccount": "Create account",
+    "signInSubtitle": "Sign in to continue creating festive pet portraits",
+    "signUpSubtitle": "Join us and start creating festive pet portraits",
+    "username": "Username",
+    "fullName": "Full Name",
+    "emailAddress": "Email Address",
+    "gender": "Gender",
+    "creatingAccount": "Creating Account...",
+    "backToHome": "Back to Home",
+    "continueWithGoogle": "Continue with Google",
+    "signInWithEmail": "Sign in with Email",
+    "poweredBy": "Powered by Better Auth. By continuing, you agree to our Terms of Service and Privacy Policy.",
+    "modal": {
+      "title": "Log in to save and download",
+      "subtitle": "Sign in to keep your creations and unlock premium quality for your pet portraits."
+    }
+  },
+  "footer": {
+    "copyright": "© 2025 Pets Santa. All rights reserved.",
+    "madeWith": "Made with",
+    "forPets": "for pets everywhere"
+  },
+  "languageSwitcher": {
+    "en": "English",
+    "zh": "中文"
+  }
+}

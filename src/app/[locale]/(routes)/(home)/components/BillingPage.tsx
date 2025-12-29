@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 
 interface CreditDetails {
   balance: number;
@@ -34,6 +35,8 @@ interface BillingPageProps {
 
 const BillingPage: React.FC<BillingPageProps> = ({ onGoPricing }) => {
   const searchParams = useSearchParams();
+  const t = useTranslations('billing');
+  const tCommon = useTranslations('common');
   const [credits, setCredits] = useState<CreditDetails | null>(null);
   const [payments, setPayments] = useState<Payment[]>([]);
   const [transactions, setTransactions] = useState<Transaction[]>([]);
@@ -58,10 +61,10 @@ const BillingPage: React.FC<BillingPageProps> = ({ onGoPricing }) => {
     try {
       setIsLoading(true);
       const response = await fetch('/api/billing');
-      
+
       if (!response.ok) {
         if (response.status === 401) {
-          setError('Please login to view billing information');
+          setError(t('pleaseLogin'));
           return;
         }
         throw new Error('Failed to fetch billing data');
@@ -73,7 +76,7 @@ const BillingPage: React.FC<BillingPageProps> = ({ onGoPricing }) => {
       setTransactions(data.transactions);
     } catch (err) {
       console.error('Billing fetch error:', err);
-      setError('Failed to load billing information');
+      setError(t('failedToLoad'));
     } finally {
       setIsLoading(false);
     }
@@ -104,6 +107,15 @@ const BillingPage: React.FC<BillingPageProps> = ({ onGoPricing }) => {
       refunded: 'bg-gray-100 text-gray-700 dark:bg-gray-900/30 dark:text-gray-400',
     };
     return statusStyles[status] || statusStyles.pending;
+  };
+
+  const getStatusText = (status: string) => {
+    const statusMap: Record<string, string> = {
+      completed: t('completed'),
+      pending: t('pending'),
+      failed: t('failed'),
+    };
+    return statusMap[status] || status;
   };
 
   const getTransactionTypeIcon = (type: string) => {
@@ -144,7 +156,7 @@ const BillingPage: React.FC<BillingPageProps> = ({ onGoPricing }) => {
               onClick={fetchBillingData}
               className="px-6 py-3 bg-red-600 text-white rounded-full font-semibold hover:bg-red-700 transition-colors"
             >
-              Try Again
+              {tCommon('tryAgain')}
             </button>
           </div>
         </div>
@@ -161,8 +173,8 @@ const BillingPage: React.FC<BillingPageProps> = ({ onGoPricing }) => {
             <div className="flex items-center gap-4">
               <div className="text-4xl">🎉</div>
               <div>
-                <h3 className="text-lg font-bold text-green-800 dark:text-green-300">Payment Successful!</h3>
-                <p className="text-green-700 dark:text-green-400">Your credits have been added to your account.</p>
+                <h3 className="text-lg font-bold text-green-800 dark:text-green-300">{tCommon('success')}!</h3>
+                <p className="text-green-700 dark:text-green-400">{t('creditsAdded')}</p>
               </div>
             </div>
           </div>
@@ -170,15 +182,15 @@ const BillingPage: React.FC<BillingPageProps> = ({ onGoPricing }) => {
 
         {/* Header */}
         <div className="text-center mb-12">
-          <h1 className="text-5xl font-bold text-slate-900 dark:text-white mb-4 festive-font">Billing</h1>
-          <p className="text-lg text-slate-600 dark:text-slate-400">Manage your credits and view payment history</p>
+          <h1 className="text-5xl font-bold text-slate-900 dark:text-white mb-4 festive-font">{t('title')}</h1>
+          <p className="text-lg text-slate-600 dark:text-slate-400">{t('manageCredits')}</p>
         </div>
 
         {/* Credit Balance Card */}
         <div className="bg-white dark:bg-slate-900 rounded-3xl shadow-xl border border-slate-100 dark:border-slate-800 p-8 mb-8">
           <div className="flex flex-col md:flex-row items-center justify-between gap-6">
             <div className="text-center md:text-left">
-              <h2 className="text-lg font-medium text-slate-600 dark:text-slate-400 mb-2">Available Credits</h2>
+              <h2 className="text-lg font-medium text-slate-600 dark:text-slate-400 mb-2">{t('currentCredits')}</h2>
               <div className="flex items-center gap-3">
                 <span className="text-5xl">🎨</span>
                 <span className="text-6xl font-bold text-slate-900 dark:text-white">
@@ -186,16 +198,16 @@ const BillingPage: React.FC<BillingPageProps> = ({ onGoPricing }) => {
                 </span>
               </div>
             </div>
-            
+
             <div className="flex gap-6">
               <div className="text-center">
-                <div className="text-sm text-slate-500 dark:text-slate-400 mb-1">Total Earned</div>
+                <div className="text-sm text-slate-500 dark:text-slate-400 mb-1">{t('totalEarned')}</div>
                 <div className="text-2xl font-bold text-green-600 dark:text-green-400">
                   +{credits?.totalEarned || 0}
                 </div>
               </div>
               <div className="text-center">
-                <div className="text-sm text-slate-500 dark:text-slate-400 mb-1">Total Spent</div>
+                <div className="text-sm text-slate-500 dark:text-slate-400 mb-1">{t('totalSpent')}</div>
                 <div className="text-2xl font-bold text-slate-600 dark:text-slate-300">
                   -{credits?.totalSpent || 0}
                 </div>
@@ -206,24 +218,24 @@ const BillingPage: React.FC<BillingPageProps> = ({ onGoPricing }) => {
               onClick={onGoPricing}
               className="px-8 py-4 bg-red-600 text-white rounded-2xl font-bold text-lg hover:bg-red-700 transition-all shadow-lg shadow-red-200 dark:shadow-red-900/20 transform hover:-translate-y-1"
             >
-              Buy More Credits
+              {t('buyMoreCredits')}
             </button>
           </div>
         </div>
 
         {/* Payment History */}
         <div className="bg-white dark:bg-slate-900 rounded-3xl shadow-xl border border-slate-100 dark:border-slate-800 p-8 mb-8">
-          <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-6">Payment History</h2>
-          
+          <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-6">{t('purchaseHistory')}</h2>
+
           {payments.length === 0 ? (
             <div className="text-center py-12">
               <div className="text-4xl mb-4">💳</div>
-              <p className="text-slate-500 dark:text-slate-400">No payments yet</p>
+              <p className="text-slate-500 dark:text-slate-400">{t('noPurchases')}</p>
               <button
                 onClick={onGoPricing}
                 className="mt-4 text-red-600 dark:text-red-400 font-semibold hover:underline"
               >
-                Make your first purchase →
+                {t('startCreating')} →
               </button>
             </div>
           ) : (
@@ -248,14 +260,14 @@ const BillingPage: React.FC<BillingPageProps> = ({ onGoPricing }) => {
                   </div>
                   <div className="flex items-center gap-4">
                     <span className={`px-3 py-1 rounded-full text-xs font-bold uppercase ${getStatusBadge(payment.status)}`}>
-                      {payment.status}
+                      {getStatusText(payment.status)}
                     </span>
                     <div className="text-right">
                       <div className="font-bold text-slate-900 dark:text-white">
                         {formatAmount(payment.amount, payment.currency)}
                       </div>
                       <div className="text-sm text-green-600 dark:text-green-400">
-                        +{payment.creditsGranted} credits
+                        +{payment.creditsGranted} {tCommon('credits')}
                       </div>
                     </div>
                   </div>
@@ -267,12 +279,12 @@ const BillingPage: React.FC<BillingPageProps> = ({ onGoPricing }) => {
 
         {/* Credit Usage History */}
         <div className="bg-white dark:bg-slate-900 rounded-3xl shadow-xl border border-slate-100 dark:border-slate-800 p-8">
-          <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-6">Credit Usage</h2>
-          
+          <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-6">{t('creditUsage')}</h2>
+
           {transactions.length === 0 ? (
             <div className="text-center py-12">
               <div className="text-4xl mb-4">📝</div>
-              <p className="text-slate-500 dark:text-slate-400">No transactions yet</p>
+              <p className="text-slate-500 dark:text-slate-400">{t('noTransactions')}</p>
             </div>
           ) : (
             <div className="space-y-3">
@@ -297,7 +309,7 @@ const BillingPage: React.FC<BillingPageProps> = ({ onGoPricing }) => {
                       {transaction.amount > 0 ? '+' : ''}{transaction.amount}
                     </div>
                     <div className="text-xs text-slate-500 dark:text-slate-400">
-                      Balance: {transaction.balanceAfter}
+                      {t('balance')}: {transaction.balanceAfter}
                     </div>
                   </div>
                 </div>
@@ -311,4 +323,3 @@ const BillingPage: React.FC<BillingPageProps> = ({ onGoPricing }) => {
 };
 
 export default BillingPage;
-

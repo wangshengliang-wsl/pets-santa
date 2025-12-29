@@ -1,0 +1,275 @@
+{
+  "metadata": {
+    "title": "萌宠圣诞 - AI 宠物圣诞肖像",
+    "description": "用 AI 为您的宠物创作神奇的圣诞肖像。给毛茸茸的朋友换上圣诞老人、精灵或驯鹿装扮——制作完美的节日贺卡。"
+  },
+  "common": {
+    "login": "登录",
+    "logout": "退出登录",
+    "home": "首页",
+    "pricing": "价格",
+    "billing": "账单",
+    "myCreations": "我的作品",
+    "download": "下载",
+    "share": "分享",
+    "tryAgain": "重试",
+    "refresh": "刷新",
+    "credits": "积分",
+    "loading": "加载中...",
+    "processing": "处理中...",
+    "generating": "生成中...",
+    "success": "成功",
+    "failed": "失败",
+    "error": "错误",
+    "close": "关闭"
+  },
+  "nav": {
+    "home": "首页",
+    "pricing": "价格",
+    "billing": "账单",
+    "myCreations": "我的作品",
+    "login": "登录",
+    "logout": "退出登录"
+  },
+  "hero": {
+    "titlePart1": "为您的宠物创作",
+    "titleHighlight": "圣诞肖像",
+    "titlePart2": "",
+    "subtitle": "上传照片，立即为宠物换上圣诞老人、精灵或驯鹿装扮——非常适合制作节日贺卡。",
+    "generateButton": "生成圣诞造型",
+    "loginToGenerate": "登录后生成",
+    "uploadButton": "上传宠物照片",
+    "uploadHint": "JPG / PNG • 最大 10MB",
+    "creditsPerGeneration": "每次生成消耗 20 积分",
+    "bestResults": "光线充足、宠物居中的照片效果最佳。",
+    "photoUploaded": "照片已上传！准备生成",
+    "uploadingPhoto": "正在上传照片...",
+    "readyToSpread": "准备好传播节日欢乐了吗？",
+    "beforeLabel": "生成前",
+    "afterLabel": "生成后",
+    "generateAnother": "生成其他风格",
+    "newStyles": "新风格",
+    "collection": "2025 合集",
+    "waitingQueue": "排队等待中...",
+    "processingImage": "正在处理图片...",
+    "creatingTask": "正在创建生成任务...",
+    "fileTooLarge": "文件过大，最大支持 10MB。",
+    "pleaseWaitUpload": "请等待图片上传完成。",
+    "insufficientCredits": "积分不足。您需要 {required} 积分，但目前只有 {current} 积分。",
+    "pleaseLogin": "请登录后生成图片。",
+    "somethingWrong": "出现问题，请重试。",
+    "mayTake": "这可能需要 30-60 秒",
+    "ready": "就绪",
+    "uploading": "上传中...",
+    "shareTitle": "我的宠物圣诞肖像",
+    "shareText": "看看我的宠物节日装扮！使用萌宠圣诞制作。",
+    "linkCopied": "链接已复制到剪贴板！",
+    "creditsLabel": "积分"
+  },
+  "styles": {
+    "santaSuit": "圣诞老人装",
+    "elfCostume": "精灵装",
+    "reindeerHoodie": "驯鹿卫衣",
+    "cozySweater": "温暖毛衣",
+    "winterWonderland": "冬日仙境",
+    "giftBoxSurprise": "礼盒惊喜"
+  },
+  "features": {
+    "title": "功能特点",
+    "subtitle": "几秒钟内创建节日宠物肖像所需的一切。我们的 AI 自动处理光线、阴影和构图。",
+    "oneClick": {
+      "title": "一键换装圣诞服饰",
+      "desc": "立即将宠物变成圣诞老人、精灵或驯鹿造型。"
+    },
+    "holidayScenes": {
+      "title": "节日场景与道具",
+      "desc": "自动添加圣诞树、灯光、礼物、雪花和温馨背景。"
+    },
+    "highQuality": {
+      "title": "高清下载",
+      "desc": "获得适合打印和社交媒体分享的清晰图片。"
+    },
+    "multipleStyles": {
+      "title": "一张照片多种风格",
+      "desc": "生成多种造型，挑选您最喜欢的节日杰作。"
+    },
+    "fastSimple": {
+      "title": "快速简单",
+      "desc": "上传 → 生成 → 下载。完全不需要设计技能。"
+    },
+    "privateDefault": {
+      "title": "默认隐私保护",
+      "desc": "除非您选择分享，否则您的图片不会公开。"
+    }
+  },
+  "faq": {
+    "title": "常见问题",
+    "subtitle": "关于萌宠圣诞肖像的常见问题。",
+    "questions": {
+      "editingSkills": {
+        "q": "需要修图技能吗？",
+        "a": "不需要。只需上传照片，我们的 AI 会自动完成其余工作。"
+      },
+      "bestPhotos": {
+        "q": "什么样的照片效果最好？",
+        "a": "光线充足、宠物居中、面部清晰可见的照片效果最真实。"
+      },
+      "howLong": {
+        "q": "需要多长时间？",
+        "a": "通常只需几秒钟，取决于模型流量。几乎是即时的！"
+      },
+      "multipleStyles": {
+        "q": "可以生成多种风格吗？",
+        "a": "可以——您可以用同一张照片尝试不同的模板，次数取决于您的套餐。"
+      },
+      "isFree": {
+        "q": "免费吗？",
+        "a": "可以免费试用！高级套餐可解锁更多风格、优先速度和更高清的下载。"
+      },
+      "storePhotos": {
+        "q": "你们会存储我的照片吗？",
+        "a": "您的作品由您控制。我们尊重您的隐私，您可以随时从历史记录中删除作品。"
+      }
+    }
+  },
+  "testimonials": {
+    "title": "宠物主人怎么说",
+    "items": {
+      "emma": {
+        "text": "我的猫穿上精灵装太可爱了——瞬间节日氛围拉满。",
+        "author": "艾玛",
+        "role": "猫咪爱好者"
+      },
+      "lucas": {
+        "text": "我们给狗狗和兔子都做了圣诞肖像，超级有趣又简单。",
+        "author": "卢卡斯",
+        "role": "狗爸爸"
+      },
+      "nina": {
+        "text": "非常适合我们宠物店的节日促销——顾客都很喜欢。",
+        "author": "妮娜",
+        "role": "店主"
+      }
+    }
+  },
+  "cta": {
+    "title": "准备好为您的宠物制作圣诞肖像了吗？",
+    "subtitle": "上传照片，几秒钟内生成您的第一个节日造型。",
+    "uploadGenerate": "上传并生成",
+    "seePricing": "查看价格",
+    "noCreditCard": "试用无需信用卡。"
+  },
+  "about": {
+    "title": "为宠物爱好者打造，专为节日而生",
+    "description": "萌宠圣诞帮助您将日常宠物照片变成您真正想分享的节日肖像。无需复杂工具——只需上传即可生成。",
+    "features": {
+      "holidayCards": "非常适合节日贺卡和礼物",
+      "socialPosts": "适合社交媒体发帖和家庭分享",
+      "allPets": "支持狗、猫和其他宠物"
+    },
+    "instantMagic": "即时魔法",
+    "perfectGift": "送给宠物主人的完美礼物"
+  },
+  "pricing": {
+    "title": "价格",
+    "subtitle": "一次性购买，无需订阅，只有节日欢乐。",
+    "bestValue": "超值之选",
+    "holidayPack": "节日套餐",
+    "packDescription": "非常适合与家人和朋友分享。获得 200 积分用于 AI 宠物肖像。",
+    "oneTimePayment": "一次性付款",
+    "creditsIncluded": "包含 {credits} 积分",
+    "buyCredits": "购买 200 积分",
+    "features": {
+      "holidayCredits": "200 节日积分",
+      "highQuality": "高清下载",
+      "allStyles": "所有圣诞风格",
+      "priorityGeneration": "优先生成",
+      "noExpiration": "永不过期",
+      "commercialUsage": "可商用"
+    },
+    "secureCheckout": "安全结账",
+    "poweredByStripe": "由 Stripe 提供支持",
+    "customVolume": "需要大量积分？",
+    "contactUs": "联系我们",
+    "bulkRates": "获取批量价格。"
+  },
+  "billing": {
+    "title": "账单",
+    "currentCredits": "当前积分",
+    "creditsAvailable": "可用积分",
+    "purchaseHistory": "购买记录",
+    "noPurchases": "暂无购买记录",
+    "startCreating": "购买积分开始创建节日宠物肖像！",
+    "buyMoreCredits": "购买更多积分",
+    "date": "日期",
+    "description": "描述",
+    "amount": "金额",
+    "status": "状态",
+    "completed": "已完成",
+    "pending": "处理中",
+    "failed": "失败",
+    "manageCredits": "管理您的积分和查看购买记录",
+    "totalEarned": "总获得",
+    "totalSpent": "总消费",
+    "creditUsage": "积分使用记录",
+    "noTransactions": "暂无交易记录",
+    "balance": "余额",
+    "creditsAdded": "积分已添加到您的账户。",
+    "pleaseLogin": "请登录查看账单信息",
+    "failedToLoad": "加载账单信息失败"
+  },
+  "creations": {
+    "title": "我的作品",
+    "noCreations": "还没有作品",
+    "goCreate": "前往首页创建您的第一个节日肖像！",
+    "queued": "排队中",
+    "generating": "生成中",
+    "inQueue": "排队中...",
+    "generationFailed": "生成失败",
+    "pleaseLogin": "请登录查看您的作品",
+    "failedToLoad": "加载作品失败"
+  },
+  "auth": {
+    "signIn": "登录",
+    "signUp": "注册",
+    "email": "邮箱",
+    "password": "密码",
+    "confirmPassword": "确认密码",
+    "name": "姓名",
+    "forgotPassword": "忘记密码？",
+    "noAccount": "还没有账号？",
+    "haveAccount": "已有账号？",
+    "orContinueWith": "或者使用以下方式继续",
+    "or": "或",
+    "google": "Google",
+    "github": "GitHub",
+    "signingIn": "登录中...",
+    "signingUp": "注册中...",
+    "welcomeBack": "欢迎回来",
+    "createAccount": "创建账号",
+    "signInSubtitle": "登录以继续创建节日宠物肖像",
+    "signUpSubtitle": "加入我们，开始创建节日宠物肖像",
+    "username": "用户名",
+    "fullName": "姓名",
+    "emailAddress": "邮箱地址",
+    "gender": "性别",
+    "creatingAccount": "正在创建账号...",
+    "backToHome": "返回首页",
+    "continueWithGoogle": "使用 Google 继续",
+    "signInWithEmail": "使用邮箱登录",
+    "poweredBy": "由 Better Auth 提供支持。继续即表示您同意我们的服务条款和隐私政策。",
+    "modal": {
+      "title": "登录以保存和下载",
+      "subtitle": "登录以保存您的作品并解锁高清下载。"
+    }
+  },
+  "footer": {
+    "copyright": "© 2025 萌宠圣诞。保留所有权利。",
+    "madeWith": "用",
+    "forPets": "为全世界的宠物而做"
+  },
+  "languageSwitcher": {
+    "en": "English",
+    "zh": "中文"
+  }
+}
