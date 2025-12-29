@@ -626,12 +626,18 @@ const Hero: React.FC<HeroProps> = ({ onGenerated, user, onLogin }) => {
                       </svg>
                     </motion.div>
                     <motion.button
-                      onClick={() => fileInputRef.current?.click()}
+                      onClick={() => {
+                        if (!user) {
+                          onLogin();
+                          return;
+                        }
+                        fileInputRef.current?.click();
+                      }}
                       whileHover={{ scale: 1.05, y: -2 }}
                       whileTap={{ scale: 0.95 }}
                       className="bg-red-600 dark:bg-red-600 text-white px-10 py-4 rounded-full font-bold shadow-xl hover:bg-red-700 dark:hover:bg-red-500 transition-colors mb-4"
                     >
-                      {t('uploadButton')}
+                      {!user ? `🔐 ${t('loginToGenerate')}` : t('uploadButton')}
                     </motion.button>
                     <p className="text-slate-400 dark:text-slate-500 text-xs font-medium uppercase tracking-widest">{t('uploadHint')}</p>
                     <input type="file" ref={fileInputRef} onChange={handleFileChange} className="hidden" accept="image/*" />

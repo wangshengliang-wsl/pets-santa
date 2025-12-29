@@ -15,6 +15,8 @@ import CTASection from './CTASection';
 import PricingPage from './PricingPage';
 import MyCreationsPage from './MyCreationsPage';
 import BillingPage from './BillingPage';
+import PrivacyPage from './PrivacyPage';
+import TermsPage from './TermsPage';
 import { Page, User } from '../types';
 import { useSession, signOut } from '@/lib/auth/client';
 
@@ -34,6 +36,8 @@ const PetsSantaApp: React.FC<PetsSantaAppProps> = ({ initialPage }) => {
     if (pathname === '/billing') return 'billing';
     if (pathname === '/pricing') return 'pricing';
     if (pathname === '/my-creations') return 'my-creations';
+    if (pathname === '/privacy') return 'privacy';
+    if (pathname === '/terms') return 'terms';
     return 'home';
   };
 
@@ -97,6 +101,8 @@ const PetsSantaApp: React.FC<PetsSantaAppProps> = ({ initialPage }) => {
       'pricing': '/pricing',
       'my-creations': '/my-creations',
       'billing': '/billing',
+      'privacy': '/privacy',
+      'terms': '/terms',
     };
     
     const newPath = routes[page] || '/';
@@ -155,6 +161,12 @@ const PetsSantaApp: React.FC<PetsSantaAppProps> = ({ initialPage }) => {
       {currentPage === 'my-creations' && <MyCreationsPage />}
       {currentPage === 'billing' && (
         <BillingPage onGoPricing={() => handlePageChange('pricing')} />
+      )}
+      {currentPage === 'privacy' && (
+        <PrivacyPage onGoHome={() => handlePageChange('home')} />
+      )}
+      {currentPage === 'terms' && (
+        <TermsPage onGoHome={() => handlePageChange('home')} />
       )}
       <AuthModal isOpen={isAuthModalOpen} onClose={() => setIsAuthModalOpen(false)} />
     </AppLayout>

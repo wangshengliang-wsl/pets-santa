@@ -279,6 +279,78 @@
     "title": "AI Christmas Pet Photo Templates",
     "description": "Upload a photo of your pet and let AI turn it into a festive holiday portrait. Dress your pet in Santa, Elf, or Reindeer outfits, add cozy winter scenes, Christmas trees, lights, and gifts—no editing needed. Just upload, generate, and download your Christmas pet photo online."
   },
+  "legal": {
+    "backToHome": "Back to Home",
+    "lastUpdated": "Last Updated",
+    "privacy": {
+      "title": "Privacy Policy",
+      "intro": "At Pets Santa, we take your privacy seriously. This Privacy Policy explains how we collect, use, and protect your personal information when you use our AI pet portrait service.",
+      "sections": {
+        "collect": {
+          "title": "Information We Collect",
+          "content": "We collect information you provide directly to us, including: email address and account information when you register; pet photos you upload for portrait generation; payment information when you make purchases (processed securely by Stripe); usage data and preferences to improve our service."
+        },
+        "use": {
+          "title": "How We Use Your Information",
+          "content": "We use your information to: provide and improve our AI pet portrait service; process your payments and deliver purchased credits; send you service-related notifications; respond to your questions and support requests; analyze usage patterns to enhance user experience."
+        },
+        "storage": {
+          "title": "Data Storage and Security",
+          "content": "Your uploaded photos are stored securely and used only for generating portraits. We implement industry-standard security measures to protect your data. You can delete your creations from your history at any time."
+        },
+        "sharing": {
+          "title": "Information Sharing",
+          "content": "We do not sell your personal information. We may share your information with: service providers who assist in operating our platform (e.g., Stripe for payments, cloud storage providers); law enforcement when required by law."
+        },
+        "rights": {
+          "title": "Your Rights",
+          "content": "You have the right to: access and download your personal data; delete your account and associated data; opt out of marketing communications; request correction of inaccurate information."
+        },
+        "contact": {
+          "title": "Contact Us",
+          "content": "If you have any questions about this Privacy Policy, please contact us at privacy@petssanta.com."
+        }
+      }
+    },
+    "terms": {
+      "title": "Terms of Service",
+      "intro": "Welcome to Pets Santa. By using our service, you agree to these Terms of Service. Please read them carefully.",
+      "sections": {
+        "service": {
+          "title": "Service Description",
+          "content": "Pets Santa provides an AI-powered service that transforms your pet photos into festive Christmas portraits. Our service is provided \"as is\" and we continuously work to improve it."
+        },
+        "account": {
+          "title": "Account Responsibilities",
+          "content": "You are responsible for maintaining the security of your account and password. You must provide accurate information when creating an account. You are responsible for all activities that occur under your account."
+        },
+        "credits": {
+          "title": "Credits and Payments",
+          "content": "Credits are purchased as one-time payments and do not expire. Credits are non-refundable except as required by law. Each portrait generation consumes credits as displayed at the time of generation."
+        },
+        "content": {
+          "title": "User Content",
+          "content": "You retain ownership of photos you upload. By uploading, you grant us license to process your photos for portrait generation. You must have the right to upload any photos you submit. We may remove content that violates these terms."
+        },
+        "prohibited": {
+          "title": "Prohibited Uses",
+          "content": "You may not: use the service for any illegal purpose; upload inappropriate or offensive content; attempt to reverse engineer our AI technology; resell or redistribute generated portraits commercially without permission; abuse or overload our systems."
+        },
+        "liability": {
+          "title": "Limitation of Liability",
+          "content": "Pets Santa is not liable for any indirect, incidental, or consequential damages. Our total liability is limited to the amount you paid for credits in the past 12 months."
+        },
+        "changes": {
+          "title": "Changes to Terms",
+          "content": "We may update these terms from time to time. Continued use of the service after changes constitutes acceptance of the new terms."
+        },
+        "contact": {
+          "title": "Contact Us",
+          "content": "If you have any questions about these Terms of Service, please contact us at support@petssanta.com."
+        }
+      }
+    }
+  },
   "languageSwitcher": {
     "en": "English",
     "zh": "中文"

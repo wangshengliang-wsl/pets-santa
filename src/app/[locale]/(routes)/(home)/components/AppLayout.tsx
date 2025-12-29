@@ -151,8 +151,8 @@ const AppLayout: React.FC<LayoutProps> = ({
             <div>
               <h4 className="text-white font-bold mb-4 uppercase text-xs tracking-widest">{tFooter('legal')}</h4>
               <ul className="space-y-2 text-sm text-slate-400">
-                <li><button className="hover:text-red-400 transition-colors">{tFooter('privacyPolicy')}</button></li>
-                <li><button className="hover:text-red-400 transition-colors">{tFooter('termsOfService')}</button></li>
+                <li><button onClick={() => setCurrentPage('privacy')} className="hover:text-red-400 transition-colors">{tFooter('privacyPolicy')}</button></li>
+                <li><button onClick={() => setCurrentPage('terms')} className="hover:text-red-400 transition-colors">{tFooter('termsOfService')}</button></li>
               </ul>
             </div>
           </div>
