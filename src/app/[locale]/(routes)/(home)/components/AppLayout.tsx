@@ -69,7 +69,7 @@ const AppLayout: React.FC<LayoutProps> = ({
               <button
                 onClick={toggleDarkMode}
                 className="p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-400 transition-all border border-transparent hover:border-slate-200 dark:hover:border-slate-700"
-                aria-label="Toggle Dark Mode"
+                aria-label={tCommon('toggleDarkMode')}
               >
                 {isDarkMode ? (
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 fill-yellow-400" viewBox="0 0 20 20" fill="currentColor">
@@ -138,21 +138,21 @@ const AppLayout: React.FC<LayoutProps> = ({
                 <span className="festive-font text-2xl font-bold text-white">Pets Santa</span>
               </div>
               <p className="text-slate-400 max-w-sm">
-                Make holiday portraits in seconds. Dress your furry friends in the best Christmas outfits with the power of AI.
+                {tFooter('description')}
               </p>
             </div>
             <div>
-              <h4 className="text-white font-bold mb-4 uppercase text-xs tracking-widest">Product</h4>
+              <h4 className="text-white font-bold mb-4 uppercase text-xs tracking-widest">{tFooter('product')}</h4>
               <ul className="space-y-2 text-sm text-slate-400">
                 <li><button onClick={() => setCurrentPage('home')} className="hover:text-red-400 transition-colors">{t('home')}</button></li>
                 <li><button onClick={() => setCurrentPage('pricing')} className="hover:text-red-400 transition-colors">{t('pricing')}</button></li>
               </ul>
             </div>
             <div>
-              <h4 className="text-white font-bold mb-4 uppercase text-xs tracking-widest">Legal</h4>
+              <h4 className="text-white font-bold mb-4 uppercase text-xs tracking-widest">{tFooter('legal')}</h4>
               <ul className="space-y-2 text-sm text-slate-400">
-                <li><button className="hover:text-red-400 transition-colors">Privacy Policy</button></li>
-                <li><button className="hover:text-red-400 transition-colors">Terms of Service</button></li>
+                <li><button className="hover:text-red-400 transition-colors">{tFooter('privacyPolicy')}</button></li>
+                <li><button className="hover:text-red-400 transition-colors">{tFooter('termsOfService')}</button></li>
               </ul>
             </div>
           </div>

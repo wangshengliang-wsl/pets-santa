@@ -35,6 +35,21 @@ interface TaskStatus {
 const Hero: React.FC<HeroProps> = ({ onGenerated, user, onLogin }) => {
   const t = useTranslations('hero');
   const tCommon = useTranslations('common');
+  const tStyles = useTranslations('styles');
+
+  // Map style.id to translation key
+  const getStyleLabel = (styleId: string): string => {
+    const styleKeyMap: Record<string, string> = {
+      'santa-suit': 'santaSuit',
+      'elf-costume': 'elfCostume',
+      'reindeer-hoodie': 'reindeerHoodie',
+      'cozy-sweater': 'cozySweater',
+      'winter-wonderland': 'winterWonderland',
+      'gift-box': 'giftBoxSurprise'
+    };
+    return tStyles(styleKeyMap[styleId] || styleId);
+  };
+
   const [file, setFile] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
   const [uploadedUrl, setUploadedUrl] = useState<string | null>(null);
@@ -95,7 +110,7 @@ const Hero: React.FC<HeroProps> = ({ onGenerated, user, onLogin }) => {
         setIsGenerating(false);
         setGenerationStatus('');
         if (preview) {
-          onGenerated(preview, data.resultImageUrl, selectedStyle.label);
+          onGenerated(preview, data.resultImageUrl, getStyleLabel(selectedStyle.id));
         }
       } else if (data.status === 'failed') {
         stopPolling();
@@ -115,7 +130,7 @@ const Hero: React.FC<HeroProps> = ({ onGenerated, user, onLogin }) => {
       }
       // 继续轮询，不停止
     }
-  }, [stopPolling, preview, selectedStyle.label, onGenerated]);
+  }, [stopPolling, preview, selectedStyle.id, onGenerated, getStyleLabel]);
 
   // 开始轮询
   const startPolling = useCallback((taskId: string) => {
@@ -344,7 +359,7 @@ const Hero: React.FC<HeroProps> = ({ onGenerated, user, onLogin }) => {
                     }`}
                   >
                     <span className="text-xl">{style.icon}</span>
-                    <span className="text-[10px] font-bold uppercase tracking-tight truncate w-full px-1">{style.label}</span>
+                    <span className="text-[10px] font-bold uppercase tracking-tight truncate w-full px-1">{getStyleLabel(style.id)}</span>
                   </motion.button>
                 ))}
               </motion.div>

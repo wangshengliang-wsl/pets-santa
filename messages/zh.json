@@ -21,7 +21,9 @@
     "success": "成功",
     "failed": "失败",
     "error": "错误",
-    "close": "关闭"
+    "close": "关闭",
+    "defaultUserName": "宠物爱好者",
+    "toggleDarkMode": "切换深色模式"
   },
   "nav": {
     "home": "首页",
@@ -266,7 +268,16 @@
   "footer": {
     "copyright": "© 2025 萌宠圣诞。保留所有权利。",
     "madeWith": "用",
-    "forPets": "为全世界的宠物而做"
+    "forPets": "为全世界的宠物而做",
+    "description": "几秒钟内制作节日肖像。借助 AI 的力量，为您的毛茸茸的朋友穿上最棒的圣诞服装。",
+    "product": "产品",
+    "legal": "法律信息",
+    "privacyPolicy": "隐私政策",
+    "termsOfService": "服务条款"
+  },
+  "seo": {
+    "title": "AI 圣诞宠物照片模板",
+    "description": "上传您宠物的照片，让 AI 将其变成节日肖像。为您的宠物穿上圣诞老人、精灵或驯鹿装扮，添加温馨的冬日场景、圣诞树、灯光和礼物——无需编辑技能。只需上传、生成，即可在线下载您的圣诞宠物照片。"
   },
   "languageSwitcher": {
     "en": "English",

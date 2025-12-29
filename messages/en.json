@@ -21,7 +21,9 @@
     "success": "Success",
     "failed": "Failed",
     "error": "Error",
-    "close": "Close"
+    "close": "Close",
+    "defaultUserName": "Pet Lover",
+    "toggleDarkMode": "Toggle Dark Mode"
   },
   "nav": {
     "home": "Home",
@@ -266,7 +268,16 @@
   "footer": {
     "copyright": "© 2025 Pets Santa. All rights reserved.",
     "madeWith": "Made with",
-    "forPets": "for pets everywhere"
+    "forPets": "for pets everywhere",
+    "description": "Make holiday portraits in seconds. Dress your furry friends in the best Christmas outfits with the power of AI.",
+    "product": "Product",
+    "legal": "Legal",
+    "privacyPolicy": "Privacy Policy",
+    "termsOfService": "Terms of Service"
+  },
+  "seo": {
+    "title": "AI Christmas Pet Photo Templates",
+    "description": "Upload a photo of your pet and let AI turn it into a festive holiday portrait. Dress your pet in Santa, Elf, or Reindeer outfits, add cozy winter scenes, Christmas trees, lights, and gifts—no editing needed. Just upload, generate, and download your Christmas pet photo online."
   },
   "languageSwitcher": {
     "en": "English",

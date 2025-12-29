@@ -54,6 +54,22 @@ const emojiVariants = {
 const MyCreationsPage: React.FC = () => {
   const t = useTranslations('creations');
   const tCommon = useTranslations('common');
+  const tStyles = useTranslations('styles');
+
+  // Map English style label to translation key
+  const getStyleLabel = (styleLabel: string): string => {
+    const styleKeyMap: Record<string, string> = {
+      'Santa Suit': 'santaSuit',
+      'Elf Costume': 'elfCostume',
+      'Reindeer Hoodie': 'reindeerHoodie',
+      'Cozy Sweater': 'cozySweater',
+      'Winter Wonderland': 'winterWonderland',
+      'Gift Box Surprise': 'giftBoxSurprise'
+    };
+    const key = styleKeyMap[styleLabel];
+    return key ? tStyles(key) : styleLabel;
+  };
+
   const [creations, setCreations] = useState<Creation[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -400,7 +416,7 @@ const MyCreationsPage: React.FC = () => {
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ delay: 0.2 }}
                       >
-                        {c.style}
+                        {getStyleLabel(c.style)}
                       </motion.div>
                     )}
 
@@ -414,7 +430,7 @@ const MyCreationsPage: React.FC = () => {
                       </span>
                       {c.status !== 'success' && (
                         <span className="text-[10px] text-slate-400 dark:text-slate-500 mt-1">
-                          {c.style}
+                          {getStyleLabel(c.style)}
                         </span>
                       )}
                     </div>

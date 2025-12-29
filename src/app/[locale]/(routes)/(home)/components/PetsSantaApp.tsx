@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import AppLayout from './AppLayout';
 import Hero from './Hero';
 import Features from './Features';
@@ -25,7 +26,8 @@ const PetsSantaApp: React.FC<PetsSantaAppProps> = ({ initialPage }) => {
   const pathname = usePathname();
   const router = useRouter();
   const searchParams = useSearchParams();
-  
+  const tCommon = useTranslations('common');
+
   // 根据路径确定初始页面
   const getInitialPage = (): Page => {
     if (initialPage) return initialPage;
@@ -45,7 +47,7 @@ const PetsSantaApp: React.FC<PetsSantaAppProps> = ({ initialPage }) => {
   // 将 Better Auth 的 User 映射到我们的本地 User 类型
   const mappedUser: User | null = session?.user ? {
     id: session.user.id,
-    name: session.user.name || 'Pet Lover',
+    name: session.user.name || tCommon('defaultUserName'),
     email: session.user.email,
     plan: 'free'
   } : null;
