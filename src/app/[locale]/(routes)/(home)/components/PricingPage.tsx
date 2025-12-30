@@ -130,19 +130,19 @@ const PricingPage: React.FC<PricingPageProps> = ({ onPlanSelect, isLoggedIn, onL
   };
 
   return (
-    <div className="py-24 bg-slate-50 dark:bg-slate-950 transition-colors duration-300 overflow-hidden">
-      <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="py-16 bg-slate-50 dark:bg-slate-950 transition-colors duration-300 overflow-hidden min-h-screen flex flex-col justify-center">
+      <div className="max-w-lg mx-auto px-4 sm:px-6">
         {/* 标题区域 - 淡入动画 */}
-        <ScrollReveal className="text-center mb-16">
+        <ScrollReveal className="text-center mb-10">
           <motion.div variants={fadeIn}>
-            <h1 className="text-6xl font-bold text-slate-900 dark:text-white mb-6 festive-font">{t('title')}</h1>
-            <p className="text-xl text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">{t('subtitle')}</p>
+            <h1 className="text-4xl lg:text-5xl font-bold text-slate-900 dark:text-white mb-4 festive-font">{t('title')}</h1>
+            <p className="text-lg text-slate-600 dark:text-slate-400 max-w-md mx-auto">{t('subtitle')}</p>
           </motion.div>
         </ScrollReveal>
 
         {/* 定价卡片 - 从下滑入 */}
         <motion.div
-          className="relative bg-white dark:bg-slate-900 p-10 rounded-[2.5rem] shadow-2xl border-2 border-red-500 dark:border-red-600"
+          className="relative bg-white dark:bg-slate-900 p-6 sm:p-8 rounded-3xl shadow-2xl border-2 border-red-500 dark:border-red-600"
           variants={cardVariants}
           initial="hidden"
           whileInView="visible"
@@ -155,7 +155,7 @@ const PricingPage: React.FC<PricingPageProps> = ({ onPlanSelect, isLoggedIn, onL
         >
           {/* Best Value 徽章 */}
           <motion.div
-            className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-red-600 text-white text-sm font-bold uppercase tracking-widest px-8 py-2.5 rounded-full shadow-xl"
+            className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-red-600 text-white text-sm font-bold uppercase tracking-wider px-6 py-2 rounded-full shadow-xl"
             variants={badgeVariants}
             initial="hidden"
             whileInView="visible"
@@ -166,34 +166,34 @@ const PricingPage: React.FC<PricingPageProps> = ({ onPlanSelect, isLoggedIn, onL
 
           <div className="text-center">
             <motion.div
-              className="mb-8"
+              className="mb-6"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.2 }}
             >
-              <h3 className="text-4xl font-bold text-slate-900 dark:text-white mb-3">{t('holidayPack')}</h3>
-              <p className="text-slate-500 dark:text-slate-400 text-lg leading-relaxed max-w-md mx-auto">{t('packDescription')}</p>
+              <h3 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white mb-2">{t('holidayPack')}</h3>
+              <p className="text-slate-500 dark:text-slate-400 text-base leading-relaxed">{t('packDescription')}</p>
             </motion.div>
 
             <motion.div
-              className="mb-10"
+              className="mb-6"
               variants={priceVariants}
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true }}
             >
-              <div className="flex items-center justify-center gap-3">
+              <div className="flex items-center justify-center">
                 <motion.span
-                  className="text-7xl font-bold text-slate-900 dark:text-white"
+                  className="text-5xl sm:text-6xl font-bold text-slate-900 dark:text-white"
                   whileHover={{ scale: 1.05, transition: { type: "spring", stiffness: 400 } }}
                 >
                   $20
                 </motion.span>
               </div>
-              <div className="text-slate-400 text-sm font-bold uppercase tracking-widest mt-3">{t('oneTimePayment')}</div>
+              <div className="text-slate-400 text-sm font-bold uppercase tracking-wider mt-2">{t('oneTimePayment')}</div>
               <motion.div
-                className="mt-4 inline-flex items-center gap-2 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 px-4 py-2 rounded-full text-sm font-semibold"
+                className="mt-3 inline-flex items-center gap-2 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 px-4 py-2 rounded-full text-base font-semibold"
                 initial={{ opacity: 0, scale: 0.8 }}
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
@@ -212,7 +212,7 @@ const PricingPage: React.FC<PricingPageProps> = ({ onPlanSelect, isLoggedIn, onL
 
             {/* 功能列表 - 错开入场 */}
             <motion.div
-              className="grid grid-cols-2 gap-4 mb-10 max-w-lg mx-auto"
+              className="grid grid-cols-2 gap-3 mb-6"
               variants={staggerContainer}
               initial="hidden"
               whileInView="visible"
@@ -221,24 +221,24 @@ const PricingPage: React.FC<PricingPageProps> = ({ onPlanSelect, isLoggedIn, onL
               {FEATURE_KEYS.map((key, j) => (
                 <motion.div
                   key={key}
-                  className="flex items-center gap-3 text-slate-600 dark:text-slate-400 font-medium text-left"
+                  className="flex items-center justify-center gap-2 text-slate-600 dark:text-slate-400 font-medium"
                   variants={staggerItem}
                   whileHover={{ x: 4, transition: { duration: 0.2 } }}
                 >
                   <motion.span
-                    className="w-6 h-6 bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400 rounded-full flex items-center justify-center text-xs flex-shrink-0"
+                    className="w-5 h-5 bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400 rounded-full flex items-center justify-center text-xs flex-shrink-0"
                     whileHover={{ scale: 1.2, rotate: 10 }}
                   >
                     ✓
                   </motion.span>
-                  <span className="text-sm">{t(`features.${key}`)}</span>
+                  <span className="text-sm sm:text-base">{t(`features.${key}`)}</span>
                 </motion.div>
               ))}
             </motion.div>
 
             {/* 购买按钮 - 脉动效果 */}
             <motion.div
-              className="relative w-full max-w-md mx-auto"
+              className="relative w-full"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -255,7 +255,7 @@ const PricingPage: React.FC<PricingPageProps> = ({ onPlanSelect, isLoggedIn, onL
               <motion.button
                 onClick={handlePurchase}
                 disabled={isLoading}
-                className={`relative w-full py-5 rounded-2xl font-bold text-lg transition-colors flex items-center justify-center gap-2 ${
+                className={`relative w-full py-4 rounded-2xl font-bold text-lg transition-colors flex items-center justify-center gap-2 ${
                   isLoading
                     ? 'bg-slate-300 dark:bg-slate-700 text-slate-500 cursor-not-allowed'
                     : 'bg-red-600 text-white shadow-xl shadow-red-200 dark:shadow-red-900/20'
@@ -285,7 +285,7 @@ const PricingPage: React.FC<PricingPageProps> = ({ onPlanSelect, isLoggedIn, onL
             </motion.div>
 
             <motion.div
-              className="mt-6 flex items-center justify-center gap-4 text-xs text-slate-400"
+              className="mt-4 flex items-center justify-center gap-4 text-sm text-slate-400"
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
@@ -304,7 +304,7 @@ const PricingPage: React.FC<PricingPageProps> = ({ onPlanSelect, isLoggedIn, onL
         </motion.div>
 
         <motion.div
-          className="mt-16 text-center text-slate-400 text-sm italic"
+          className="mt-8 text-center text-slate-400 text-sm"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
