@@ -4,6 +4,10 @@ import { betterAuth } from "better-auth";
 import { username } from "better-auth/plugins";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { restrictedUsernames } from "./usernames";
+import { CreditService } from "@/lib/services/credit-service";
+
+// 新用户注册赠送的积分数量
+const WELCOME_BONUS_CREDITS = 20;
 
 // 生成随机用户名的辅助函数
 function generateRandomUsername(): string {
@@ -41,21 +45,35 @@ export const auth = betterAuth({
         before: async (user) => {
           // 如果用户没有 username（社交登录），自动生成一个
           let updatedUser = { ...user };
-          
+
           if (!updatedUser.username) {
             const generatedUsername = generateRandomUsername();
             updatedUser.username = generatedUsername;
             updatedUser.displayUsername = generatedUsername;
           }
-          
+
           // 如果用户没有 gender（社交登录），设置默认值为 false
           if (updatedUser.gender === undefined || updatedUser.gender === null) {
             updatedUser.gender = false;
           }
-          
+
           return {
             data: updatedUser,
           };
+        },
+        after: async (user) => {
+          // 新用户注册后赠送积分
+          try {
+            await CreditService.addCredits(
+              user.id,
+              WELCOME_BONUS_CREDITS,
+              "Welcome bonus - free credits for new users",
+              `welcome_bonus_${user.id}`
+            );
+            console.log(`Granted ${WELCOME_BONUS_CREDITS} welcome credits to new user: ${user.id}`);
+          } catch (error) {
+            console.error("Failed to grant welcome credits:", error);
+          }
         },
       },
     },

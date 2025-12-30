@@ -92,6 +92,8 @@ const PetsSantaApp: React.FC<PetsSantaAppProps> = ({ initialPage }) => {
   // 包装的 setCurrentPage，同时更新 URL
   const handlePageChange = (page: Page) => {
     setCurrentPage(page);
+    // 滚动到页面顶部
+    window.scrollTo({ top: 0, behavior: 'smooth' });
     // 更新 URL，但保持查询参数（如 success=true&session_id=xxx）
     const currentSearch = searchParams.toString();
     const queryString = currentSearch ? `?${currentSearch}` : '';

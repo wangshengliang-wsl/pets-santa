@@ -66,7 +66,10 @@
     "shareTitle": "My Christmas Pet Portrait",
     "shareText": "Check out my pet in their holiday outfit! Made with Pets Santa.",
     "linkCopied": "Link copied to clipboard!",
-    "creditsLabel": "credits"
+    "creditsLabel": "credits",
+    "serviceCreditsInsufficient": "Service temporarily unavailable. Please try again later.",
+    "generationFailed": "Generation failed. Please try again.",
+    "serviceError": "Service configuration error. Please contact support."
   },
   "styles": {
     "santaSuit": "Santa Suit",

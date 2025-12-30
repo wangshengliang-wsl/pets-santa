@@ -10,6 +10,7 @@ import {
   staggerCard,
   scaleIn
 } from '@/components/motion';
+import ImagePreviewModal from './ImagePreviewModal';
 
 interface Creation {
   id: string;
@@ -74,6 +75,20 @@ const MyCreationsPage: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const isMountedRef = useRef(true);
+
+  // 图片预览模态框状态
+  const [previewImage, setPreviewImage] = useState<string | null>(null);
+  const [isPreviewOpen, setIsPreviewOpen] = useState(false);
+
+  const openPreview = (imageUrl: string) => {
+    setPreviewImage(imageUrl);
+    setIsPreviewOpen(true);
+  };
+
+  const closePreview = () => {
+    setIsPreviewOpen(false);
+    setPreviewImage(null);
+  };
 
   const fetchCreations = useCallback(async () => {
     if (!isMountedRef.current) {
@@ -368,9 +383,10 @@ const MyCreationsPage: React.FC = () => {
                       <motion.img
                         src={c.resultImageUrl}
                         alt={c.style}
-                        className="w-full h-full object-cover"
+                        className="w-full h-full object-cover cursor-pointer"
                         whileHover={{ scale: 1.1 }}
                         transition={{ duration: 0.6 }}
+                        onClick={() => openPreview(c.resultImageUrl!)}
                       />
                     ) : c.status === 'pending' || c.status === 'processing' ? (
                       <div className="w-full h-full flex flex-col items-center justify-center p-4">
@@ -437,20 +453,24 @@ const MyCreationsPage: React.FC = () => {
 
                     {c.status === 'success' && c.resultImageUrl && (
                       <motion.button
-                        onClick={() => {
+                        onClick={async () => {
                           try {
+                            // 使用 fetch 获取图片 blob 来解决跨域下载问题
+                            const response = await fetch(c.resultImageUrl!);
+                            const blob = await response.blob();
+                            const blobUrl = URL.createObjectURL(blob);
+
                             const link = document.createElement('a');
-                            link.href = c.resultImageUrl!;
+                            link.href = blobUrl;
                             link.download = `pet-${c.id}.png`;
                             document.body.appendChild(link);
                             link.click();
+
+                            // 清理
                             setTimeout(() => {
-                              try {
-                                if (link.parentNode) {
-                                  document.body.removeChild(link);
-                                }
-                              } catch (e) {
-                                console.warn('Failed to remove download link:', e);
+                              URL.revokeObjectURL(blobUrl);
+                              if (link.parentNode) {
+                                document.body.removeChild(link);
                               }
                             }, 100);
                           } catch (err) {
@@ -477,6 +497,13 @@ const MyCreationsPage: React.FC = () => {
           )}
         </AnimatePresence>
       </div>
+
+      {/* 图片预览模态框 */}
+      <ImagePreviewModal
+        isOpen={isPreviewOpen}
+        imageUrl={previewImage}
+        onClose={closePreview}
+      />
     </div>
   );
 };

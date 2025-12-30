@@ -66,7 +66,10 @@
     "shareTitle": "我的宠物圣诞肖像",
     "shareText": "看看我的宠物节日装扮！使用萌宠圣诞制作。",
     "linkCopied": "链接已复制到剪贴板！",
-    "creditsLabel": "积分"
+    "creditsLabel": "积分",
+    "serviceCreditsInsufficient": "服务暂时不可用，请稍后重试。",
+    "generationFailed": "生成失败，请重试。",
+    "serviceError": "服务配置错误，请联系客服。"
   },
   "styles": {
     "santaSuit": "圣诞老人装",

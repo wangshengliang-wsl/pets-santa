@@ -18,6 +18,7 @@ import {
   hoverLift,
   tapScale
 } from '@/components/motion';
+import ImagePreviewModal from './ImagePreviewModal';
 
 interface HeroProps {
   onGenerated: (original: string, generated: string, style: string) => void;
@@ -36,6 +37,24 @@ const Hero: React.FC<HeroProps> = ({ onGenerated, user, onLogin }) => {
   const t = useTranslations('hero');
   const tCommon = useTranslations('common');
   const tStyles = useTranslations('styles');
+
+  // Map API error messages to translation keys
+  const getLocalizedError = (errorMessage: string): string => {
+    // Check for known API error patterns
+    if (errorMessage.includes('credits are insufficient') ||
+        errorMessage.includes('Please top up')) {
+      return t('serviceCreditsInsufficient');
+    }
+    if (errorMessage.includes('Service configuration error')) {
+      return t('serviceError');
+    }
+    if (errorMessage.includes('Failed to create task') ||
+        errorMessage.includes('Generation failed')) {
+      return t('generationFailed');
+    }
+    // Return the original message if no match, or fallback to generic error
+    return t('somethingWrong');
+  };
 
   // Map style.id to translation key
   const getStyleLabel = (styleId: string): string => {
@@ -62,6 +81,17 @@ const Hero: React.FC<HeroProps> = ({ onGenerated, user, onLogin }) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const pollingIntervalRef = useRef<NodeJS.Timeout | null>(null);
   const isMountedRef = useRef(true);
+
+  // 图片预览模态框状态
+  const [isPreviewOpen, setIsPreviewOpen] = useState(false);
+
+  const openPreview = () => {
+    if (result) setIsPreviewOpen(true);
+  };
+
+  const closePreview = () => {
+    setIsPreviewOpen(false);
+  };
 
   const { upload, isUploading, error: uploadError, progress } = useUpload();
 
@@ -114,7 +144,7 @@ const Hero: React.FC<HeroProps> = ({ onGenerated, user, onLogin }) => {
         }
       } else if (data.status === 'failed') {
         stopPolling();
-        setError(data.errorMessage || 'Generation failed. Please try again.');
+        setError(data.errorMessage ? getLocalizedError(data.errorMessage) : t('generationFailed'));
         setIsGenerating(false);
         setGenerationStatus('');
       } else {
@@ -213,7 +243,8 @@ const Hero: React.FC<HeroProps> = ({ onGenerated, user, onLogin }) => {
           onLogin();
           setError(t('pleaseLogin'));
         } else {
-          setError(data.error || t('somethingWrong'));
+          // Use localized error for API errors
+          setError(data.error ? getLocalizedError(data.error) : t('somethingWrong'));
         }
         setIsGenerating(false);
         setGenerationStatus('');
@@ -243,27 +274,29 @@ const Hero: React.FC<HeroProps> = ({ onGenerated, user, onLogin }) => {
     setIsGenerating(false);
   };
 
-  const handleDownload = () => {
+  const handleDownload = async () => {
     if (!user) {
       onLogin();
       return;
     }
     if (result) {
       try {
+        // 使用 fetch 获取图片 blob 来解决跨域下载问题
+        const response = await fetch(result);
+        const blob = await response.blob();
+        const blobUrl = URL.createObjectURL(blob);
+
         const link = document.createElement('a');
-        link.href = result;
+        link.href = blobUrl;
         link.download = `christmas-pet-${Date.now()}.png`;
         document.body.appendChild(link);
         link.click();
-        // 使用 setTimeout 确保 click 事件完成后再移除
+
+        // 清理
         setTimeout(() => {
-          try {
-            if (link.parentNode) {
-              document.body.removeChild(link);
-            }
-          } catch (e) {
-            // 忽略移除失败的错误
-            console.warn('Failed to remove download link:', e);
+          URL.revokeObjectURL(blobUrl);
+          if (link.parentNode) {
+            document.body.removeChild(link);
           }
         }, 100);
       } catch (err) {
@@ -436,10 +469,11 @@ const Hero: React.FC<HeroProps> = ({ onGenerated, user, onLogin }) => {
                       <motion.img
                         src={result}
                         alt="Generated Portrait"
-                        className="w-full h-full object-cover"
+                        className="w-full h-full object-cover cursor-pointer"
                         initial={{ scale: 1.1, opacity: 0 }}
                         animate={{ scale: 1, opacity: 1 }}
                         transition={{ duration: 0.5 }}
+                        onClick={openPreview}
                       />
                       <motion.div
                         className="absolute top-4 left-4 bg-red-600 text-white px-3 py-1 rounded-full text-[10px] font-bold shadow-lg uppercase tracking-widest"
@@ -683,6 +717,14 @@ const Hero: React.FC<HeroProps> = ({ onGenerated, user, onLogin }) => {
           </motion.div>
         </div>
       </div>
+
+      {/* 图片预览模态框 */}
+      <ImagePreviewModal
+        isOpen={isPreviewOpen}
+        imageUrl={result}
+        onClose={closePreview}
+        onDownload={handleDownload}
+      />
     </section>
   );
 };
